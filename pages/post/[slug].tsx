@@ -16,11 +16,12 @@ async function getPost(slug: string) {
 }
 
 // Ghost CMS Request
+// params get all the information about the route
 export const getStaticProps = async ({ params }) => {
 	const post = await getPost(params.slug)
 	return {
 		props: { post },
-		revalidate: 10
+		revalidate: 10 // at most 1 request to the ghpst CMS in the background 
 	}
 }
 
@@ -55,8 +56,8 @@ const Post: React.FC<{ post: Post }> = (props) => {
 	}
 
 	function loadComments() {
-		setEnableLoadComments(false)
-		;(window as any).disqus_config = function () {
+		setEnableLoadComments(false);
+		(window as any).disqus_config = function () {
 			this.page.url = window.location.href
 			this.page.identifier = post.slug
 		}
